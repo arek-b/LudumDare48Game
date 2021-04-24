@@ -7,7 +7,7 @@ public class PlayerCameraRotation : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private Transform cameraFollowPoint = null;
 
-    const float Min = -18;
+    const float Min = -30;
     const float Max = 85;
 
     private void Start()

@@ -35,33 +35,37 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-
         if (Input.GetKey(W) || Input.GetKey(S) || Input.GetKey(A) || Input.GetKey(D))
         {
             UpdateDirections();
         }
 
+        // todo: optimize/refactor
+
+        Vector3 cameraForward = mainCamera.transform.forward;
+        cameraForward.y = 0;
+        Vector3 cameraRight = mainCamera.transform.right;
+        cameraRight.y = 0;
+
         if (Input.GetKey(W))
         {
             RotateTo(wDirection);
+            transform.localPosition += cameraForward* speed * Time.deltaTime;
         }
         if (Input.GetKey(S))
         {
             RotateTo(sDirection);
+            transform.localPosition += -cameraForward * speed * Time.deltaTime;
         }
         if (Input.GetKey(A))
         {
             RotateTo(aDirection);
+            transform.localPosition += -cameraRight * speed * Time.deltaTime;
         }
         if (Input.GetKey(D))
         {
             RotateTo(dDirection);
-        }
-
-        if (Input.GetKey(W) || Input.GetKey(S) || Input.GetKey(A) || Input.GetKey(D))
-        {
-            Vector3 force = -characterModel.forward;
-            transform.position += force * speed * Time.deltaTime;
+            transform.localPosition += cameraRight * speed * Time.deltaTime;
         }
     }
 
