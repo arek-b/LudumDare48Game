@@ -8,15 +8,7 @@ public class PlayerMakeSphereCreature : MonoBehaviour
     [SerializeField] private int minCreatures = 4;
     [SerializeField] private SphereCreature sphereCreature = null;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            MakeSphereCreature();
-        }
-    }
-
-    private void MakeSphereCreature()
+    public bool MakeSphereCreature()
     {
         Collider[] results = Physics.OverlapSphere(transform.position, searchRadius);
         List<Transform> morphableTransforms = new List<Transform>();
@@ -28,13 +20,14 @@ public class PlayerMakeSphereCreature : MonoBehaviour
             if (morphable != null)
             {
                 morphableTransforms.Add(morphable.transform);
-                morphable.Collider.enabled = false;
+                morphable.DeactivatePhysics();
             }
         }
 
         if (morphableTransforms.Count < minCreatures)
-            return;
+            return false;
 
         sphereCreature.BeginAssembly(morphableTransforms);
+        return true;
     }
 }

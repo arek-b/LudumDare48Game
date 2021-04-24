@@ -25,12 +25,16 @@ public class SphereCreatureMovement : MonoBehaviour
     {
         myCollider.enabled = true;
         myRigidbody.useGravity = true;
+        myRigidbody.velocity = Vector3.zero;
+        myRigidbody.angularVelocity = Vector3.zero;
     }
 
     private void OnDisable()
     {
         myCollider.enabled = false;
         myRigidbody.useGravity = false;
+        myRigidbody.velocity = Vector3.zero;
+        myRigidbody.angularVelocity = Vector3.zero;
     }
 
     private void Update()

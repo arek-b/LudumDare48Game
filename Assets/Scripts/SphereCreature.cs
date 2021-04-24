@@ -17,11 +17,25 @@ public class SphereCreature : MonoBehaviour
 
     private System.Random random;
 
+    private List<Transform> currentlyPosessedTransforms = new List<Transform>();
+
     private void Awake()
     {
         vertices = meshFilter.mesh.vertices;
         random = new System.Random();
         meshRenderer.enabled = false;
+    }
+
+    public void ReleaseTransforms()
+    {
+        foreach (Transform item in currentlyPosessedTransforms)
+        {
+            item.SetParent(null);
+            item.gameObject.layer = 0;
+            item.GetComponent<CanMorphIntoSphereCreature>().ActivatePhysics();
+        }
+
+        currentlyPosessedTransforms.Clear();
     }
 
     private Vector3 NewScale(List<Transform> transforms)
@@ -57,7 +71,8 @@ public class SphereCreature : MonoBehaviour
         transform.position = NewPosition(transforms);
         var vertexAssignment = AssignTransformsToVertices(transforms);
         MoveTransformsToVertices(vertexAssignment);
-        ControlledCreatureManager.Instance.SwitchToSphereCreature();
+        StartCoroutine(EnableControlsDelayed(assemblyDuration));
+        playerCameraRotation.enabled = true;
     }
 
     private void MoveTransformsToVertices(Dictionary<Vector3, Transform> assignments)
@@ -70,7 +85,14 @@ public class SphereCreature : MonoBehaviour
             item.Value.DOMove(targetPosition, assemblyDuration).SetEase(Ease.OutBack);
             item.Value.SetParent(meshFilter.transform);
             item.Value.gameObject.layer = SphereCreatureLayer;
+            currentlyPosessedTransforms.Add(item.Value);
         }
+    }
+
+    private IEnumerator EnableControlsDelayed(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        sphereCreatureMovement.enabled = true;
     }
 
     private Dictionary<Vector3, Transform> AssignTransformsToVertices(List<Transform> transforms)
