@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class CreatureAI : MonoBehaviour
+public class CreatureAI : MonoBehaviour, IAttackableByEnemy
 {
     [SerializeField] private float walkRadius = 20f;
     [SerializeField] private NavMeshAgent navMeshAgent = null;
@@ -98,5 +98,10 @@ public class CreatureAI : MonoBehaviour
         }
         Debug.LogWarning($"Wasn't able to find a valid random position after {MaxAttempts} attempts");
         return transform.position;
+    }
+
+    public void BeAttacked(Transform attackSource)
+    {
+        Destroy(gameObject);
     }
 }
