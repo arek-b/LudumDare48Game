@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
         dDirection = targetRotation * Quaternion.Euler(0, 90, 0);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (Input.GetKey(W) || Input.GetKey(S) || Input.GetKey(A) || Input.GetKey(D))
         {
@@ -50,27 +50,27 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(W))
         {
             RotateTo(wDirection);
-            transform.localPosition += cameraForward* speed * Time.deltaTime;
+            transform.localPosition += cameraForward* speed * Time.fixedDeltaTime;
         }
         if (Input.GetKey(S))
         {
             RotateTo(sDirection);
-            transform.localPosition += -cameraForward * speed * Time.deltaTime;
+            transform.localPosition += -cameraForward * speed * Time.fixedDeltaTime;
         }
         if (Input.GetKey(A))
         {
             RotateTo(aDirection);
-            transform.localPosition += -cameraRight * speed * Time.deltaTime;
+            transform.localPosition += -cameraRight * speed * Time.fixedDeltaTime;
         }
         if (Input.GetKey(D))
         {
             RotateTo(dDirection);
-            transform.localPosition += cameraRight * speed * Time.deltaTime;
+            transform.localPosition += cameraRight * speed * Time.fixedDeltaTime;
         }
     }
 
     private void RotateTo(Quaternion targetRotation)
     {
-        characterModel.rotation = Quaternion.Lerp(characterModel.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+        characterModel.rotation = Quaternion.Lerp(characterModel.rotation, targetRotation, Time.fixedDeltaTime * rotationSpeed);
     }
 }

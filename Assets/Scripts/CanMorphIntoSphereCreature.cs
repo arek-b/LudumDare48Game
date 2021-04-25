@@ -58,7 +58,7 @@ public class CanMorphIntoSphereCreature : MonoBehaviour
             Rigidbody.useGravity = true;
 
         if (CreatureAI != null)
-            CreatureAI.ResumeNavigation();
+            CreatureAI.ResumeRandomNavigation();
     }
 
     public void SetMorphed(SphereCreature sphereCreature)
@@ -77,6 +77,6 @@ public class CanMorphIntoSphereCreature : MonoBehaviour
         }
 
         if (CreatureAI != null)
-            CreatureAI.StopNavigation();
+            CreatureAI.StopAllNavigation();
     }
 }
