@@ -11,7 +11,7 @@ public class PlayerMakeSphereCreature : MonoBehaviour
     public bool MakeSphereCreature()
     {
         Collider[] results = Physics.OverlapSphere(transform.position, searchRadius);
-        List<Transform> morphableTransforms = new List<Transform>();
+        List<CanMorphIntoSphereCreature> morphables = new List<CanMorphIntoSphereCreature>();
 
         foreach (Collider item in results)
         {
@@ -19,15 +19,14 @@ public class PlayerMakeSphereCreature : MonoBehaviour
 
             if (morphable != null)
             {
-                morphableTransforms.Add(morphable.transform);
-                morphable.SetMorphed(sphereCreature);
+                morphables.Add(morphable);
             }
         }
 
-        if (morphableTransforms.Count < minCreatures)
+        if (morphables.Count < minCreatures)
             return false;
 
-        sphereCreature.BeginAssembly(morphableTransforms);
+        sphereCreature.BeginAssembly(morphables);
         return true;
     }
 }

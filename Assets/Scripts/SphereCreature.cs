@@ -19,7 +19,7 @@ public class SphereCreature : MonoBehaviour
 
     private System.Random random;
 
-    private List<Transform> currentlyPosessedTransforms = new List<Transform>();
+    private List<CanMorphIntoSphereCreature> currentlyPosessedMorphables = new List<CanMorphIntoSphereCreature>();
 
     private void Awake()
     {
@@ -30,33 +30,33 @@ public class SphereCreature : MonoBehaviour
 
     public void ReleaseTransforms()
     {
-        foreach (Transform item in currentlyPosessedTransforms)
+        foreach (CanMorphIntoSphereCreature item in currentlyPosessedMorphables)
         {
-            item.SetParent(null);
+            item.transform.SetParent(null);
             item.gameObject.layer = 0;
-            item.GetComponent<CanMorphIntoSphereCreature>().SetNotMorphed();
+            item.SetNotMorphed();
         }
 
-        currentlyPosessedTransforms.Clear();
+        currentlyPosessedMorphables.Clear();
     }
 
-    private Vector3 NewScale(List<Transform> transforms)
+    private Vector3 NewScale(List<CanMorphIntoSphereCreature> morphables)
     {
-        float newScale = transforms.Count / 5f;
+        float newScale = morphables.Count / 5f;
         return new Vector3(newScale, newScale, newScale);
     }
 
-    private Vector3 NewPosition(List<Transform> transforms)
+    private Vector3 NewPosition(List<CanMorphIntoSphereCreature> morphables)
     {
         float totalX = 0f;
         float totalZ = 0f;
-        foreach (Transform item in transforms)
+        foreach (CanMorphIntoSphereCreature item in morphables)
         {
-            totalX += item.position.x;
-            totalZ += item.position.z;
+            totalX += item.transform.position.x;
+            totalZ += item.transform.position.z;
         }
-        float centerX = totalX / transforms.Count;
-        float centerZ = totalZ / transforms.Count;
+        float centerX = totalX / morphables.Count;
+        float centerZ = totalZ / morphables.Count;
         float y = transform.position.y;
 
         if (Physics.Raycast(meshFilter.transform.position, Vector3.down, out RaycastHit hitInfo))
@@ -67,27 +67,31 @@ public class SphereCreature : MonoBehaviour
         return new Vector3(centerX, y, centerZ);
     }
 
-    public void BeginAssembly(List<Transform> transforms)
+    public void BeginAssembly(List<CanMorphIntoSphereCreature> morphables)
     {
-        meshFilter.transform.localScale = NewScale(transforms);
-        transform.position = NewPosition(transforms);
-        var vertexAssignment = AssignTransformsToVertices(transforms);
+        foreach (CanMorphIntoSphereCreature item in morphables)
+        {
+            item.SetMorphed(this);
+        }
+        meshFilter.transform.localScale = NewScale(morphables);
+        transform.position = NewPosition(morphables);
+        var vertexAssignment = AssignMorphablesToVertices(morphables);
         MoveTransformsToVertices(vertexAssignment);
         StartCoroutine(EnableControlsDelayed(assemblyDuration));
         playerCameraRotation.enabled = true;
     }
 
-    private void MoveTransformsToVertices(Dictionary<Vector3, Transform> assignments)
+    private void MoveTransformsToVertices(Dictionary<Vector3, CanMorphIntoSphereCreature> assignments)
     {
         const int SphereCreatureLayer = 10;
 
-        foreach (KeyValuePair<Vector3, Transform> item in assignments)
+        foreach (KeyValuePair<Vector3, CanMorphIntoSphereCreature> item in assignments)
         {
             Vector3 targetPosition = Vector3.Scale(item.Key, meshFilter.transform.localScale) + transform.position;
-            item.Value.DOMove(targetPosition, assemblyDuration).SetEase(Ease.OutBack);
-            item.Value.SetParent(meshFilter.transform);
+            item.Value.transform.DOMove(targetPosition, assemblyDuration).SetEase(Ease.OutBack);
+            item.Value.transform.SetParent(meshFilter.transform);
             item.Value.gameObject.layer = SphereCreatureLayer;
-            currentlyPosessedTransforms.Add(item.Value);
+            currentlyPosessedMorphables.Add(item.Value);
         }
     }
 
@@ -97,12 +101,12 @@ public class SphereCreature : MonoBehaviour
         sphereCreatureMovement.enabled = true;
     }
 
-    private Dictionary<Vector3, Transform> AssignTransformsToVertices(List<Transform> transforms)
+    private Dictionary<Vector3, CanMorphIntoSphereCreature> AssignMorphablesToVertices(List<CanMorphIntoSphereCreature> morphables)
     {
-        Dictionary<Vector3, Transform> keyValuePairs = new Dictionary<Vector3, Transform>();
+        Dictionary<Vector3, CanMorphIntoSphereCreature> keyValuePairs = new Dictionary<Vector3, CanMorphIntoSphereCreature>();
         List<Vector3> usedVertices = new List<Vector3>();
 
-        for (int i = 0; i < transforms.Count; i++)
+        for (int i = 0; i < morphables.Count; i++)
         {
             bool found = false;
             List<Vector3> availableVertices = new List<Vector3>(vertices);
@@ -124,7 +128,7 @@ public class SphereCreature : MonoBehaviour
                 }
 
                 usedVertices.Add(randomVertex);
-                keyValuePairs.Add(randomVertex, transforms[i]);
+                keyValuePairs.Add(randomVertex, morphables[i]);
                 found = true;
             }
 
