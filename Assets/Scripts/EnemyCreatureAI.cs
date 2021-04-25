@@ -57,11 +57,6 @@ public class EnemyCreatureAI : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            navMeshAgent.isStopped = true;
-        }
-
         #region AttackCooldown
 
         if (currentAttackCooldown > 0)
@@ -125,9 +120,9 @@ public class EnemyCreatureAI : MonoBehaviour
 
         StopCoroutine(patrolCoroutine);
         Coroutine followCoroutine = StartCoroutine(Follow(target.transform));
-        navMeshAgent.speed = defaultSpeed * 3f;
-        navMeshAgent.angularSpeed = defaultAngularSpeed * 5f;
-        navMeshAgent.acceleration = defaultAcceleration * 10;
+        navMeshAgent.speed = defaultSpeed * 2f;
+        navMeshAgent.angularSpeed = defaultAngularSpeed * 2f;
+        navMeshAgent.acceleration = defaultAcceleration * 5;
 
         yield return new WaitUntil(() => Vector3.Distance(target.transform.position, transform.position) < 1.5f);
         StopCoroutine(followCoroutine);

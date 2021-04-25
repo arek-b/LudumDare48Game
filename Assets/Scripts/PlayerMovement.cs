@@ -6,9 +6,11 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float rotationSpeed;
+    [SerializeField] private float jumpForce = 5f;
     [SerializeField] private Rigidbody myRigidbody = null;
     [SerializeField] private Camera mainCamera = null;
     [SerializeField] private Transform characterModel = null;
+    [SerializeField] private Collider myCollider = null;
 
     private const KeyCode W = KeyCode.W;
     private const KeyCode S = KeyCode.S;
@@ -19,6 +21,13 @@ public class PlayerMovement : MonoBehaviour
     private Quaternion sDirection;
     private Quaternion aDirection;
     private Quaternion dDirection;
+
+    private float distanceToGround;
+
+    private void Awake()
+    {
+        distanceToGround = myCollider.bounds.extents.y;
+    }
 
     private void UpdateDirections()
     {
@@ -66,6 +75,15 @@ public class PlayerMovement : MonoBehaviour
         {
             RotateTo(dDirection);
             transform.localPosition += cameraRight * speed * Time.fixedDeltaTime;
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) &&
+            Physics.Raycast(myCollider.bounds.center, -Vector3.up, distanceToGround + 0.1f))
+        {
+            myRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
 
