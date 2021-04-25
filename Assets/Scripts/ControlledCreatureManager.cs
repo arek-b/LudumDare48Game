@@ -61,13 +61,7 @@ public class ControlledCreatureManager : MonoBehaviour
 
     private void SwitchToPlayer()
     {
-        player.transform.position = new Vector3
-        (
-            sphereCreature.transform.position.x,
-            player.transform.position.y,
-            sphereCreature.transform.position.z
-        );
-
+        player.transform.position = sphereCreature.transform.position;
         playerVcam.Priority = int.MaxValue;
         sphereCreatureVcam.Priority = int.MinValue;
         sphereCreature.sphereCreatureMovement.enabled = false;

@@ -62,7 +62,9 @@ public class CreatureAI : MonoBehaviour
 
     public void ResumeRandomNavigation()
     {
+        // this causes errors when far away from the navmesh, can't find a way to fix
         navMeshAgent.enabled = true;
+
         walkToRandomPositionsCoroutine = StartCoroutine(WalkToRandomPositions());
     }
 
