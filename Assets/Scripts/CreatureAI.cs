@@ -18,6 +18,21 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
         walkToRandomPositionsCoroutine = StartCoroutine(WalkToRandomPositions());
     }
 
+    private void Update()
+    {
+        if (followCoroutine == null)
+            return;
+
+        if (Vector3.Distance(navMeshAgent.destination, transform.position) < 2.5f)
+        {
+            navMeshAgent.isStopped = true;
+        }
+        else
+        {
+            navMeshAgent.isStopped = false;
+        }
+    }
+
     public void StartFollowing(Transform target)
     {
         StopAllNavigation();
@@ -38,15 +53,13 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
         }
 
         followCoroutine = null;
+        navMeshAgent.isStopped = false;
         totalFollowTime = 0;
         ResumeRandomNavigation();
     }
 
     public void StopAllNavigation()
     {
-        navMeshAgent.ResetPath();
-        navMeshAgent.isStopped = true;
-        navMeshAgent.enabled = false;
         if (walkToRandomPositionsCoroutine != null)
         {
             StopCoroutine(walkToRandomPositionsCoroutine);
@@ -58,6 +71,10 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
             StopCoroutine(followCoroutine);
             walkToRandomPositionsCoroutine = null;
         }
+
+        navMeshAgent.ResetPath();
+        navMeshAgent.isStopped = true;
+        navMeshAgent.enabled = false;
     }
 
     public void ResumeRandomNavigation()
@@ -102,6 +119,8 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
 
     public void BeAttacked(Transform attackSource)
     {
+        StopAllCoroutines();
+        enabled = false;
         Destroy(gameObject);
     }
 }
