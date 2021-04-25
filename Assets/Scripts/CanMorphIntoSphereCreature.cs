@@ -3,15 +3,28 @@ using UnityEngine;
 
 public class CanMorphIntoSphereCreature : MonoBehaviour
 {
-    public Collider Collider { get; private set; }
-    public Rigidbody Rigidbody { get; private set; }
+    [SerializeField] private Collider myCollider = null;
+    [SerializeField] private Rigidbody myRigidbody = null;
+    [SerializeField] private CreatureAI creatureAI = null;
+
+    public Collider Collider => myCollider;
+    public Rigidbody Rigidbody => myRigidbody;
+    public CreatureAI CreatureAI => creatureAI;
+
+    private void OnValidate()
+    {
+        if (myCollider == null)
+            myCollider = GetComponent<Collider>();
+        if (myRigidbody == null)
+            myRigidbody = GetComponent<Rigidbody>();
+        if (creatureAI == null)
+            creatureAI = GetComponent<CreatureAI>();
+    }
 
     private SphereCreature sphereCreature = null;
 
     private void Awake()
     {
-        Collider = GetComponent<Collider>();
-        Rigidbody = GetComponent<Rigidbody>();
         enabled = false;
     }
 
@@ -43,6 +56,9 @@ public class CanMorphIntoSphereCreature : MonoBehaviour
 
         if (Rigidbody != null)
             Rigidbody.useGravity = true;
+
+        if (CreatureAI != null)
+            CreatureAI.ResumeNavigation();
     }
 
     public void SetMorphed(SphereCreature sphereCreature)
@@ -54,6 +70,13 @@ public class CanMorphIntoSphereCreature : MonoBehaviour
             Collider.enabled = false;
 
         if (Rigidbody != null)
+        {
             Rigidbody.useGravity = false;
+            Rigidbody.velocity = Vector3.zero;
+            Rigidbody.angularVelocity = Vector3.zero;
+        }
+
+        if (CreatureAI != null)
+            CreatureAI.StopNavigation();
     }
 }
