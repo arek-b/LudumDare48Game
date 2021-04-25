@@ -13,6 +13,8 @@ public class SphereCreature : MonoBehaviour
     [SerializeField] public SphereCreatureMovement sphereCreatureMovement = null;
     [SerializeField] public PlayerCameraRotation playerCameraRotation = null;
 
+    public Transform SphereTransform => meshFilter.transform;
+
     private Vector3[] vertices;
 
     private System.Random random;
@@ -32,7 +34,7 @@ public class SphereCreature : MonoBehaviour
         {
             item.SetParent(null);
             item.gameObject.layer = 0;
-            item.GetComponent<CanMorphIntoSphereCreature>().ActivatePhysics();
+            item.GetComponent<CanMorphIntoSphereCreature>().SetNotMorphed();
         }
 
         currentlyPosessedTransforms.Clear();

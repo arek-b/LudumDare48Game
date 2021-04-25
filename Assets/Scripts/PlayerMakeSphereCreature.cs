@@ -20,7 +20,7 @@ public class PlayerMakeSphereCreature : MonoBehaviour
             if (morphable != null)
             {
                 morphableTransforms.Add(morphable.transform);
-                morphable.DeactivatePhysics();
+                morphable.SetMorphed(sphereCreature);
             }
         }
 

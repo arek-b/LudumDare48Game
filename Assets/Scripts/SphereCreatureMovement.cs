@@ -5,8 +5,8 @@ public class SphereCreatureMovement : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float rotationSpeed;
-    [SerializeField] private Rigidbody myRigidbody = null;
-    [SerializeField] private Camera mainCamera = null;
+    [SerializeField] public Rigidbody myRigidbody = null;
+    [SerializeField] public Camera mainCamera = null;
     [SerializeField] private Collider myCollider = null;
 
     private const KeyCode W = KeyCode.W;
