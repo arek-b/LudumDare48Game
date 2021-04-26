@@ -25,7 +25,6 @@ public class Spawner : MonoBehaviour
 
     private void CreatureHasDied(CreatureAI creature)
     {
-        Debug.Log("Creature has died");
         Remove(creature);
     }
 
