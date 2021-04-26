@@ -1,11 +1,20 @@
 fileFormatVersion: 2
-guid: 0b5978e9fcfdff046af4ed8aad7aee7b
+guid: ad63c53658731da4d84f336db8fe673c
 ModelImporter:
   serializedVersion: 20101
   internalIDToNameTable:
   - first:
       74: -5169344529696688248
     second: Armature|Eating_Rest
+  - first:
+      74: 9149661223541978141
+    second: Armature|Hurt
+  - first:
+      74: -856494226182058050
+    second: Armature|RollAround
+  - first:
+      74: 5152524018116331999
+    second: Armature|TPose
   - first:
       74: 7497475203602601297
     second: Armature|WalkAround
