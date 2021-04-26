@@ -14,6 +14,8 @@ public class ControlledCreatureManager : MonoBehaviour
 
     private bool waitForAnimationPoint = false;
 
+    private SuperpowerFruit[] allFruits;
+
     private static ControlledCreatureManager instance;
     public static ControlledCreatureManager Instance
     {
@@ -36,6 +38,8 @@ public class ControlledCreatureManager : MonoBehaviour
         }
 
         instance = this;
+
+        allFruits = FindObjectsOfType<SuperpowerFruit>();
     }
 
     private void LateUpdate()
@@ -55,6 +59,9 @@ public class ControlledCreatureManager : MonoBehaviour
 
     private void SwitchToSphereCreature()
     {
+        if (isSphereCreature)
+            return;
+
         player.playerMovement.animator.SetTrigger(PlayerAnimations.UseSmashTrigger);
         waitForAnimationPoint = true;
     }
@@ -74,8 +81,15 @@ public class ControlledCreatureManager : MonoBehaviour
         waitForAnimationPoint = false;
     }
 
-    private void SwitchToPlayer()
+    public void SwitchToPlayer()
     {
+        if (!isSphereCreature)
+            return;
+
+        foreach (SuperpowerFruit item in allFruits)
+        {
+            item.MakeActive(true);
+        }
         player.transform.position = sphereCreature.transform.position;
         playerVcam.Priority = int.MaxValue;
         sphereCreatureVcam.Priority = int.MinValue;

@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be4f31e37152ef4c8126b5c41c3c5aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHP: 3
+  startingHP: 2
   navMeshAgent: {fileID: 5851514694993200819}
   animator: {fileID: 5851514693960886220}
   enemyCreatureAI: {fileID: 5851514694993200780}

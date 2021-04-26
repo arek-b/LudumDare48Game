@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class SuperpowerFruit : MonoBehaviour
 {
-    [SerializeField] private float respawnAfter = 60f;
     private Collider myCollider;
-
-    bool active = true;
 
     private void Awake()
     {
@@ -16,17 +13,10 @@ public class SuperpowerFruit : MonoBehaviour
 
     public void PickUp()
     {
-        StartCoroutine(PickUpCoroutine());
-    }
-
-    private IEnumerator PickUpCoroutine()
-    {
         MakeActive(false);
-        yield return new WaitForSeconds(respawnAfter);
-        MakeActive(true);
     }
 
-    private void MakeActive(bool active)
+    public void MakeActive(bool active)
     {
         foreach (Transform item in transform)
         {

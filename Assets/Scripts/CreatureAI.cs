@@ -29,11 +29,6 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
         walkToRandomPositionsCoroutine = StartCoroutine(WalkToRandomPositions());
     }
 
-    private void OnEnable()
-    {
-        CreatureManager.Instance.RegisterCreature(this);
-    }
-
     private void OnDisable()
     {
         if (applicationQuitting)
@@ -61,6 +56,7 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
 
     public void StartRolling()
     {
+        CreatureManager.Instance.RegisterCreature(this);
         animator.SetBool(AnimIsWalkingBool, false);
         animator.SetBool(AnimIsRollingBool, true);
         isRolling = true;
@@ -68,6 +64,7 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
 
     public void StopRolling()
     {
+        CreatureManager.Instance.UnregisterCreature(this);
         animator.SetBool(AnimIsWalkingBool, false);
         animator.SetBool(AnimIsRollingBool, false);
         animator.SetTrigger(AnimHurtTrigger);
@@ -76,6 +73,7 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
 
     public void StartFollowing(Transform target)
     {
+        CreatureManager.Instance.RegisterCreature(this);
         StopAllNavigation();
         navMeshAgent.enabled = true;
         followCoroutine = StartCoroutine(Follow(target));
@@ -98,6 +96,7 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
         navMeshAgent.isStopped = false;
         totalFollowTime = 0;
         animator.SetBool(AnimIsWalkingBool, false);
+        CreatureManager.Instance.UnregisterCreature(this);
         ResumeRandomNavigation();
     }
 
