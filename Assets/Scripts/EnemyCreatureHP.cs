@@ -59,6 +59,8 @@ public class EnemyCreatureHP : MonoBehaviour
             Die();
         else
             StartCoroutine(TakeDamage());
+
+        ControlledCreatureManager.Instance.SwitchToPlayer();
     }
 
     private IEnumerator TakeDamage()

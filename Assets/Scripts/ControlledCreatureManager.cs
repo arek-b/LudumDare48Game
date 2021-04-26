@@ -12,6 +12,10 @@ public class ControlledCreatureManager : MonoBehaviour
 
     private bool isSphereCreature = false;
 
+    private bool waitForAnimationPoint = false;
+
+    private SuperpowerFruit[] allFruits;
+
     private static ControlledCreatureManager instance;
     public static ControlledCreatureManager Instance
     {
@@ -34,10 +38,15 @@ public class ControlledCreatureManager : MonoBehaviour
         }
 
         instance = this;
+
+        allFruits = FindObjectsOfType<SuperpowerFruit>();
     }
 
     private void LateUpdate()
     {
+        if (waitForAnimationPoint)
+            return;
+
         if (!isSphereCreature && Input.GetKeyDown(KeyCode.V) && player.playerMakeSphereCreature.MakeSphereCreature())
         {
             SwitchToSphereCreature();
@@ -50,6 +59,18 @@ public class ControlledCreatureManager : MonoBehaviour
 
     private void SwitchToSphereCreature()
     {
+        if (isSphereCreature)
+            return;
+
+        player.playerMovement.animator.SetTrigger(PlayerAnimations.UseSmashTrigger);
+        waitForAnimationPoint = true;
+    }
+
+    public void DoUseSmash()
+    {
+        if (!waitForAnimationPoint)
+            return;
+
         playerVcam.Priority = int.MinValue;
         sphereCreatureVcam.Priority = int.MaxValue;
         player.playerMovement.enabled = false;
@@ -57,10 +78,18 @@ public class ControlledCreatureManager : MonoBehaviour
         player.playerMakeSphereCreature.enabled = false;
         player.gameObject.SetActive(false);
         isSphereCreature = true;
+        waitForAnimationPoint = false;
     }
 
-    private void SwitchToPlayer()
+    public void SwitchToPlayer()
     {
+        if (!isSphereCreature)
+            return;
+
+        foreach (SuperpowerFruit item in allFruits)
+        {
+            item.MakeActive(true);
+        }
         player.transform.position = sphereCreature.transform.position;
         playerVcam.Priority = int.MaxValue;
         sphereCreatureVcam.Priority = int.MinValue;

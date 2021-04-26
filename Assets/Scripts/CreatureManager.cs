@@ -35,11 +35,13 @@ public class CreatureManager : MonoBehaviour
 
     public void RegisterCreature(CreatureAI creature)
     {
-        creatures.Add(creature);
+        if (!creatures.Contains(creature))
+            creatures.Add(creature);
     }
 
     public void UnregisterCreature(CreatureAI creature)
     {
-        creatures.Remove(creature);
+        if (creatures.Contains(creature))
+            creatures.Remove(creature);
     }
 }

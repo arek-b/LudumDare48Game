@@ -12,5 +12,7 @@ public class Player : MonoBehaviour, IAttackableByEnemy
         Vector3 direction = -(attackSource.position - transform.position).normalized;
         direction.y += 0.5f;
         transform.GetComponent<Rigidbody>().AddForce(direction * 15f, ForceMode.Impulse);
+
+        playerMovement.animator.SetTrigger(PlayerAnimations.HurtTrigger);
     }
 }
