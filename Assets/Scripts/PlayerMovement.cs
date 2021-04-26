@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Camera mainCamera = null;
     [SerializeField] private Transform characterModel = null;
     [SerializeField] private Collider myCollider = null;
+    [SerializeField] private Animator animator = null;
 
     private const KeyCode W = KeyCode.W;
     private const KeyCode S = KeyCode.S;
@@ -28,6 +29,8 @@ public class PlayerMovement : MonoBehaviour
     private Quaternion dDirection;
 
     private float distanceToGround;
+
+    private bool falling = false;
 
     private void Awake()
     {
@@ -53,6 +56,11 @@ public class PlayerMovement : MonoBehaviour
             Input.GetKey(Up) || Input.GetKey(Down) || Input.GetKey(Left) || Input.GetKey(Right))
         {
             UpdateDirections();
+            animator.SetBool(PlayerAnimations.IsRunningBool, true);
+        }
+        else
+        {
+            animator.SetBool(PlayerAnimations.IsRunningBool, false);
         }
 
         // todo: optimize/refactor
@@ -90,7 +98,25 @@ public class PlayerMovement : MonoBehaviour
             Physics.Raycast(myCollider.bounds.center, -Vector3.up, distanceToGround + 0.1f))
         {
             myRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            animator.SetTrigger(PlayerAnimations.JumpTrigger);
         }
+
+        if (myRigidbody.velocity.y < -0.1f &&
+            Physics.Raycast(myCollider.bounds.center, -Vector3.up, distanceToGround + 1f))
+        {
+            StartCoroutine(Falling());
+        }
+    }
+
+    private IEnumerator Falling()
+    {
+        if (falling)
+            yield break;
+
+        falling = true;
+        animator.SetTrigger(PlayerAnimations.JumpLandingTrigger);
+        yield return new WaitForSeconds(1f);
+        falling = false;
     }
 
     private void RotateTo(Quaternion targetRotation)
