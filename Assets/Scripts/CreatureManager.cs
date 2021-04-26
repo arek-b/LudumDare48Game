@@ -21,6 +21,8 @@ public class CreatureManager : MonoBehaviour
 
     public int Count => creatures.Count;
 
+    public List<CreatureAI> Creatures => creatures;
+
     private void Awake()
     {
         if (instance != null)

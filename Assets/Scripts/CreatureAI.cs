@@ -23,6 +23,9 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
     private const string AnimHurtTrigger = "Hurt";
     private const string AnimIsTPoseBool = "IsTPose";
 
+    public delegate void eventCreatureHasDied(CreatureAI creature);
+    public static event eventCreatureHasDied CreatureHasDied;
+
     private void Awake()
     {
         Application.quitting += () => applicationQuitting = true;
@@ -165,6 +168,7 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
 
     public void BeAttacked(Transform attackSource)
     {
+        CreatureHasDied?.Invoke(this);
         StopAllCoroutines();
         enabled = false;
         Destroy(gameObject);
