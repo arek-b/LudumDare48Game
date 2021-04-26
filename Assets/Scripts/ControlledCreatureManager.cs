@@ -38,11 +38,11 @@ public class ControlledCreatureManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!isSphereCreature && Input.GetKeyDown(KeyCode.G) && player.playerMakeSphereCreature.MakeSphereCreature())
+        if (!isSphereCreature && Input.GetKeyDown(KeyCode.V) && player.playerMakeSphereCreature.MakeSphereCreature())
         {
             SwitchToSphereCreature();
         }
-        else if (isSphereCreature && Input.GetKeyDown(KeyCode.G))
+        else if (isSphereCreature && Input.GetKeyDown(KeyCode.V))
         {
             SwitchToPlayer();
         }

@@ -17,6 +17,11 @@ public class PlayerMovement : MonoBehaviour
     private const KeyCode A = KeyCode.A;
     private const KeyCode D = KeyCode.D;
 
+    private const KeyCode Up = KeyCode.UpArrow;
+    private const KeyCode Down = KeyCode.DownArrow;
+    private const KeyCode Left = KeyCode.LeftArrow;
+    private const KeyCode Right = KeyCode.RightArrow;
+
     private Quaternion wDirection;
     private Quaternion sDirection;
     private Quaternion aDirection;
@@ -44,7 +49,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Input.GetKey(W) || Input.GetKey(S) || Input.GetKey(A) || Input.GetKey(D))
+        if (Input.GetKey(W) || Input.GetKey(S) || Input.GetKey(A) || Input.GetKey(D) ||
+            Input.GetKey(Up) || Input.GetKey(Down) || Input.GetKey(Left) || Input.GetKey(Right))
         {
             UpdateDirections();
         }
@@ -56,22 +62,22 @@ public class PlayerMovement : MonoBehaviour
         Vector3 cameraRight = mainCamera.transform.right;
         cameraRight.y = 0;
 
-        if (Input.GetKey(W))
+        if (Input.GetKey(W) || Input.GetKey(Up))
         {
             RotateTo(wDirection);
             transform.localPosition += cameraForward* speed * Time.fixedDeltaTime;
         }
-        if (Input.GetKey(S))
+        if (Input.GetKey(S) || Input.GetKey(Down))
         {
             RotateTo(sDirection);
             transform.localPosition += -cameraForward * speed * Time.fixedDeltaTime;
         }
-        if (Input.GetKey(A))
+        if (Input.GetKey(A) || Input.GetKey(Left))
         {
             RotateTo(aDirection);
             transform.localPosition += -cameraRight * speed * Time.fixedDeltaTime;
         }
-        if (Input.GetKey(D))
+        if (Input.GetKey(D) || Input.GetKey(Right))
         {
             RotateTo(dDirection);
             transform.localPosition += cameraRight * speed * Time.fixedDeltaTime;

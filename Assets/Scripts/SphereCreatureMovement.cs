@@ -14,6 +14,11 @@ public class SphereCreatureMovement : MonoBehaviour
     private const KeyCode A = KeyCode.A;
     private const KeyCode D = KeyCode.D;
 
+    private const KeyCode Up = KeyCode.UpArrow;
+    private const KeyCode Down = KeyCode.DownArrow;
+    private const KeyCode Left = KeyCode.LeftArrow;
+    private const KeyCode Right = KeyCode.RightArrow;
+
     private Vector3 startingPosition;
 
     private void Awake()
@@ -44,36 +49,36 @@ public class SphereCreatureMovement : MonoBehaviour
         Vector3 cameraRight = mainCamera.transform.right;
         cameraRight.y = 0;
 
-        if (Input.GetKey(W))
+        if (Input.GetKey(W) || Input.GetKey(Up))
         {
             AddMovement(cameraForward);
         }
-        if (Input.GetKey(S))
+        if (Input.GetKey(S) || Input.GetKey(Down))
         {
             AddMovement(-cameraForward);
         }
-        if (Input.GetKey(A))
+        if (Input.GetKey(A) || Input.GetKey(Left))
         {
             AddMovement(-cameraRight);
         }
-        if (Input.GetKey(D))
+        if (Input.GetKey(D) || Input.GetKey(Right))
         {
             AddMovement(cameraRight);
         }
 
-        if (Input.GetKey(W))
+        if (Input.GetKey(W) || Input.GetKey(Up))
         {
             AddRotation(cameraRight);
         }
-        if (Input.GetKey(S))
+        if (Input.GetKey(S) || Input.GetKey(Down))
         {
             AddRotation(-cameraRight);
         }
-        if (Input.GetKey(A))
+        if (Input.GetKey(A) || Input.GetKey(Left))
         {
             AddRotation(cameraForward);
         }
-        if (Input.GetKey(D))
+        if (Input.GetKey(D) || Input.GetKey(Right))
         {
             AddRotation(-cameraForward);
         }
