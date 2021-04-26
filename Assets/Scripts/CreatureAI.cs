@@ -7,13 +7,21 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
 {
     [SerializeField] private float walkRadius = 20f;
     [SerializeField] private NavMeshAgent navMeshAgent = null;
+    [SerializeField] private Animator animator = null;
 
     private Coroutine walkToRandomPositionsCoroutine = null;
     private Coroutine followCoroutine = null;
 
+    private bool isRolling = false;
+
     private float totalFollowTime = 0f;
 
     private bool applicationQuitting = false;
+
+    private const string AnimIsWalkingBool = "IsWalking";
+    private const string AnimIsRollingBool = "IsRolling";
+    private const string AnimHurtTrigger = "Hurt";
+    private const string AnimIsTPoseBool = "IsTPose";
 
     private void Awake()
     {
@@ -36,17 +44,34 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
 
     private void Update()
     {
-        if (followCoroutine == null)
-            return;
+        if (followCoroutine != null)
+        {
+            if (Vector3.Distance(navMeshAgent.destination, transform.position) < 2.5f)
+            {
+                navMeshAgent.isStopped = true;
+                animator.SetBool(AnimIsWalkingBool, false);
+            }
+            else
+            {
+                navMeshAgent.isStopped = false;
+                animator.SetBool(AnimIsWalkingBool, true);
+            }
+        }
+    }
 
-        if (Vector3.Distance(navMeshAgent.destination, transform.position) < 2.5f)
-        {
-            navMeshAgent.isStopped = true;
-        }
-        else
-        {
-            navMeshAgent.isStopped = false;
-        }
+    public void StartRolling()
+    {
+        animator.SetBool(AnimIsWalkingBool, false);
+        animator.SetBool(AnimIsRollingBool, true);
+        isRolling = true;
+    }
+
+    public void StopRolling()
+    {
+        animator.SetBool(AnimIsWalkingBool, false);
+        animator.SetBool(AnimIsRollingBool, false);
+        animator.SetTrigger(AnimHurtTrigger);
+        isRolling = false;
     }
 
     public void StartFollowing(Transform target)
@@ -58,6 +83,7 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
 
     private IEnumerator Follow(Transform target)
     {
+        animator.SetBool(AnimIsWalkingBool, true);
         float getBoredAfter = Mathf.Lerp(10f, 60f, Random.value);
 
         while(totalFollowTime <= getBoredAfter)
@@ -71,6 +97,7 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
         followCoroutine = null;
         navMeshAgent.isStopped = false;
         totalFollowTime = 0;
+        animator.SetBool(AnimIsWalkingBool, false);
         ResumeRandomNavigation();
     }
 
@@ -88,6 +115,7 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
             followCoroutine = null;
         }
 
+        animator.SetBool(AnimIsWalkingBool, false);
         navMeshAgent.ResetPath();
         navMeshAgent.isStopped = true;
         navMeshAgent.enabled = false;
@@ -103,13 +131,16 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
 
     private IEnumerator WalkToRandomPositions()
     {
+        animator.SetBool(AnimIsWalkingBool, false);
         yield return new WaitForSeconds(Mathf.Lerp(0f, 5f, Random.value));
+        animator.SetBool(AnimIsWalkingBool, true);
         navMeshAgent.SetDestination(GetRandomPosition());
         yield return new WaitUntil(() =>
             !navMeshAgent.pathPending &&
             navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance &&
             (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude == 0f)
         );
+        animator.SetBool(AnimIsWalkingBool, false);
         yield return new WaitForSeconds(Mathf.Lerp(2f, 15f, Random.value));
         walkToRandomPositionsCoroutine = StartCoroutine(WalkToRandomPositions());
     }
