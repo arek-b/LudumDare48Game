@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyCreatureAI : MonoBehaviour
 {
     [SerializeField] private float detectCreatureRange = 5f;
-    [SerializeField] private float attackCooldown = 4f;
+    [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private NavMeshAgent navMeshAgent = null;
     [SerializeField] private Transform destinationsContainer = null;
     [SerializeField] private Animator animator = null;
@@ -131,7 +131,7 @@ public class EnemyCreatureAI : MonoBehaviour
 
         StopCoroutine(patrolCoroutine);
         navMeshAgent.speed = defaultSpeed * 2f;
-        navMeshAgent.angularSpeed = defaultAngularSpeed * 4f;
+        navMeshAgent.angularSpeed = 360;
 
         bool reached = false;
 
@@ -141,7 +141,6 @@ public class EnemyCreatureAI : MonoBehaviour
             {
                 if (item == myCollider)
                 {
-                    Debug.Log("REACHED");
                     reached = true;
                     break;
                 }
@@ -151,13 +150,8 @@ public class EnemyCreatureAI : MonoBehaviour
             yield return null;
         }
 
-        
-
         navMeshAgent.updateRotation = false;
         StartCoroutine(LockOnRotation(target.transform));
-
-        
-        Debug.Log(transform.rotation.eulerAngles);
 
         navMeshAgent.ResetPath();
         navMeshAgent.isStopped = true;
