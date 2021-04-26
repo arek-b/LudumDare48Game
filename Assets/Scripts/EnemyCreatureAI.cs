@@ -9,6 +9,8 @@ public class EnemyCreatureAI : MonoBehaviour
     [SerializeField] private float attackCooldown = 4f;
     [SerializeField] private NavMeshAgent navMeshAgent = null;
     [SerializeField] private Transform destinationsContainer = null;
+    [SerializeField] private Animator animator = null;
+    [SerializeField] private Collider myCollider = null;
 
     private Transform[] destinations;
     private int currentDestination = 0;
@@ -21,6 +23,11 @@ public class EnemyCreatureAI : MonoBehaviour
     private float defaultAcceleration;
 
     private Coroutine patrolCoroutine = null;
+
+    private const string AnimIsMovingBool = "IsMoving";
+    private const string AnimDieTrigger = "Die";
+    private const string AnimAttackTrigger = "Attack";
+    private const string AnimHurtTrigger = "Hurt";
 
     private void Awake()
     {
@@ -111,6 +118,10 @@ public class EnemyCreatureAI : MonoBehaviour
         #endregion
     }
 
+    #region Attack
+
+    private IAttackableByEnemy tempAttackTarget = null;
+
     private IEnumerator Attack(IAttackableByEnemy target)
     {
         if (currentAttackCooldown > 0)
@@ -119,34 +130,83 @@ public class EnemyCreatureAI : MonoBehaviour
         currentAttackCooldown = float.MaxValue;
 
         StopCoroutine(patrolCoroutine);
-        Coroutine followCoroutine = StartCoroutine(Follow(target.transform));
         navMeshAgent.speed = defaultSpeed * 2f;
-        navMeshAgent.angularSpeed = defaultAngularSpeed * 2f;
-        navMeshAgent.acceleration = defaultAcceleration * 5;
+        navMeshAgent.angularSpeed = defaultAngularSpeed * 4f;
 
-        yield return new WaitUntil(() => Vector3.Distance(target.transform.position, transform.position) < 1.5f);
-        StopCoroutine(followCoroutine);
+        bool reached = false;
+
+        while (!reached)
+        {
+            foreach (var item in Physics.OverlapSphere(target.transform.position, 1.9f))
+            {
+                if (item == myCollider)
+                {
+                    Debug.Log("REACHED");
+                    reached = true;
+                    break;
+                }
+            }
+
+            navMeshAgent.SetDestination(target.transform.position);
+            yield return null;
+        }
+
+        
+
+        navMeshAgent.updateRotation = false;
+        StartCoroutine(LockOnRotation(target.transform));
+
+        
+        Debug.Log(transform.rotation.eulerAngles);
+
         navMeshAgent.ResetPath();
+        navMeshAgent.isStopped = true;
 
+        animator.SetTrigger(AnimAttackTrigger);
+        tempAttackTarget = target;
+    }
+
+    private IEnumerator LockOnRotation(Transform target)
+    {
+        while (!navMeshAgent.updateRotation && target != null)
+        {
+            float newY = Quaternion.LookRotation(target.position - transform.position).eulerAngles.y;
+            transform.rotation = Quaternion.Euler
+            (
+                transform.rotation.eulerAngles.x,
+                newY,
+                transform.rotation.eulerAngles.z
+            );
+            yield return null;
+        }
+
+    }
+
+    public void DoAttack()
+    {
+        if (tempAttackTarget == null)
+            return;
+
+        tempAttackTarget.BeAttacked(attackSource: transform);
+    }
+
+    public void EndAttack()
+    {
+        if (tempAttackTarget == null)
+            return;
+
+        navMeshAgent.updateRotation = true;
         navMeshAgent.speed = defaultSpeed;
         navMeshAgent.angularSpeed = defaultAngularSpeed;
         navMeshAgent.acceleration = defaultAcceleration;
-
+        navMeshAgent.isStopped = false;
         currentDestination = FindClosestDestination();
         patrolCoroutine = StartCoroutine(Patrol());
-
-        target.BeAttacked(attackSource: transform);
         currentAttackCooldown = attackCooldown;
+        tempAttackTarget = null;
     }
 
-    private IEnumerator Follow(Transform target)
-    {
-        while (true)
-        {
-            navMeshAgent.SetDestination(target.position);
-            yield return null;
-        }
-    }
+    #endregion
 
     private int NextDestination()
     {
