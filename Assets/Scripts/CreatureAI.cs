@@ -76,6 +76,9 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
 
     public void StartFollowing(Transform target)
     {
+        if (followCoroutine != null)
+            return;
+
         CreatureManager.Instance.RegisterCreature(this);
         StopAllNavigation();
         navMeshAgent.enabled = true;
@@ -87,7 +90,15 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
         animator.SetBool(AnimIsWalkingBool, true);
         float getBoredAfter = Mathf.Lerp(10f, 60f, Random.value);
 
-        while(totalFollowTime <= getBoredAfter)
+        //while(totalFollowTime <= getBoredAfter)
+        //{
+        //    navMeshAgent.SetDestination(target.position);
+        //    float waitTime = Mathf.Lerp(0.25f, 0.75f, Random.value);
+        //    yield return new WaitForSeconds(waitTime);
+        //    totalFollowTime += waitTime;
+        //}
+
+        while (true)
         {
             navMeshAgent.SetDestination(target.position);
             float waitTime = Mathf.Lerp(0.25f, 0.75f, Random.value);
@@ -95,12 +106,12 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
             totalFollowTime += waitTime;
         }
 
-        followCoroutine = null;
-        navMeshAgent.isStopped = false;
-        totalFollowTime = 0;
-        animator.SetBool(AnimIsWalkingBool, false);
-        CreatureManager.Instance.UnregisterCreature(this);
-        ResumeRandomNavigation();
+        //followCoroutine = null;
+        //navMeshAgent.isStopped = false;
+        //totalFollowTime = 0;
+        //animator.SetBool(AnimIsWalkingBool, false);
+        //CreatureManager.Instance.UnregisterCreature(this);
+        //ResumeRandomNavigation();
     }
 
     public void StopAllNavigation()
