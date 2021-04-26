@@ -1,16 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class Ulti : MonoBehaviour
 {
     [SerializeField] private PlayerMakeSphereCreature playerMakeSphereCreature = null;
-    [SerializeField] private RectTransform ultiBack = null;
     [SerializeField] private RectTransform ultiFruit = null;
-    [SerializeField] private RectTransform ultiFrame = null;
-    [SerializeField] private TextMeshProUGUI textHasFruit = null;
-    [SerializeField] private TextMeshProUGUI textNoFruit = null;
+    [SerializeField] private RectTransform key = null;
 
     private bool hasFruitCached = true;
 
@@ -32,7 +28,6 @@ public class Ulti : MonoBehaviour
     {
         hasFruitCached = hasFruit;
         ultiFruit.gameObject.SetActive(hasFruit);
-        textHasFruit.gameObject.SetActive(hasFruit);
-        textNoFruit.gameObject.SetActive(!hasFruit);
+        key.gameObject.SetActive(hasFruit);
     }
 }
