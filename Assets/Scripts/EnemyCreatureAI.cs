@@ -24,11 +24,6 @@ public class EnemyCreatureAI : MonoBehaviour
 
     private Coroutine patrolCoroutine = null;
 
-    private const string AnimIsMovingBool = "IsMoving";
-    private const string AnimDieTrigger = "Die";
-    private const string AnimAttackTrigger = "Attack";
-    private const string AnimHurtTrigger = "Hurt";
-
     private void Awake()
     {
         destinations = new Transform[destinationsContainer.childCount];
@@ -156,7 +151,7 @@ public class EnemyCreatureAI : MonoBehaviour
         navMeshAgent.ResetPath();
         navMeshAgent.isStopped = true;
 
-        animator.SetTrigger(AnimAttackTrigger);
+        animator.SetTrigger(EnemyCreatureAnimations.AttackTrigger);
         tempAttackTarget = target;
     }
 
