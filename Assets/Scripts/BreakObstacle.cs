@@ -10,5 +10,7 @@ public class BreakObstacle : MonoBehaviour
         {
             other.GetComponent<ObstacleToBreak>().Destruct();
         }
+
+        ControlledCreatureManager.Instance.SwitchToPlayer();
     }
 }
