@@ -170,7 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 7.5
   rotationSpeed: 7.5
-  jumpForce: 5
+  jumpForce: 10
   myRigidbody: {fileID: 8546857617623712812}
   mainCamera: {fileID: 0}
   characterModel: {fileID: 6982892345790914865}
