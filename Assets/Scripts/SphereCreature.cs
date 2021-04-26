@@ -49,22 +49,27 @@ public class SphereCreature : MonoBehaviour
     private Vector3 NewPosition(List<CanMorphIntoSphereCreature> morphables)
     {
         float totalX = 0f;
+        float totalY = 0f;
         float totalZ = 0f;
         foreach (CanMorphIntoSphereCreature item in morphables)
         {
             totalX += item.transform.position.x;
+            totalY += item.transform.position.y;
             totalZ += item.transform.position.z;
         }
         float centerX = totalX / morphables.Count;
+        float centerY = totalY / morphables.Count;
         float centerZ = totalZ / morphables.Count;
-        float y = transform.position.y;
+        //float y = transform.position.y;
 
-        if (Physics.Raycast(meshFilter.transform.position, Vector3.down, out RaycastHit hitInfo))
-        {
-            y = hitInfo.point.y + (meshFilter.mesh.bounds.size.y * meshFilter.transform.localScale.y / 2);
-        }
+        //if (Physics.Raycast(meshFilter.transform.position, Vector3.down, out RaycastHit hitInfo))
+        //{
+        //    y = hitInfo.point.y + (meshFilter.mesh.bounds.size.y * meshFilter.transform.localScale.y / 2);
+        //}
 
-        return new Vector3(centerX, y, centerZ);
+        centerY += meshFilter.mesh.bounds.size.y * meshFilter.transform.localScale.y / 2;
+
+        return new Vector3(centerX, centerY, centerZ);
     }
 
     public void BeginAssembly(List<CanMorphIntoSphereCreature> morphables)
