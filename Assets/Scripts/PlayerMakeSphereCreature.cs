@@ -10,6 +10,8 @@ public class PlayerMakeSphereCreature : MonoBehaviour
 
     private bool hasFruit = false;
 
+    public bool HasFruit => hasFruit;
+
     public bool MakeSphereCreature()
     {
         if (!hasFruit)
@@ -38,8 +40,8 @@ public class PlayerMakeSphereCreature : MonoBehaviour
 
     private void Update()
     {
-        //if (hasFruit)
-        //    return;
+        if (hasFruit)
+            return;
 
         Collider[] result = Physics.OverlapSphere(transform.position, 0.1f);
 

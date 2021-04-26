@@ -13,9 +13,25 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
 
     private float totalFollowTime = 0f;
 
+    private bool applicationQuitting = false;
+
     private void Awake()
     {
+        Application.quitting += () => applicationQuitting = true;
         walkToRandomPositionsCoroutine = StartCoroutine(WalkToRandomPositions());
+    }
+
+    private void OnEnable()
+    {
+        CreatureManager.Instance.RegisterCreature(this);
+    }
+
+    private void OnDisable()
+    {
+        if (applicationQuitting)
+            return;
+
+        CreatureManager.Instance.UnregisterCreature(this);
     }
 
     private void Update()
@@ -69,7 +85,7 @@ public class CreatureAI : MonoBehaviour, IAttackableByEnemy
         if (followCoroutine != null)
         {
             StopCoroutine(followCoroutine);
-            walkToRandomPositionsCoroutine = null;
+            followCoroutine = null;
         }
 
         navMeshAgent.ResetPath();
