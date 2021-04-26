@@ -42,7 +42,7 @@ public class SphereCreature : MonoBehaviour
 
     private Vector3 NewScale(List<CanMorphIntoSphereCreature> morphables)
     {
-        float newScale = morphables.Count / 5f;
+        float newScale = 0.5f + morphables.Count / 20f;
         return new Vector3(newScale, newScale, newScale);
     }
 
