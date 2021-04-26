@@ -9,9 +9,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private Rigidbody myRigidbody = null;
     [SerializeField] private Camera mainCamera = null;
-    [SerializeField] private Transform characterModel = null;
+    [SerializeField] public Transform characterModel = null;
     [SerializeField] private Collider myCollider = null;
-    [SerializeField] private Animator animator = null;
+    [SerializeField] public Animator animator = null;
 
     private const KeyCode W = KeyCode.W;
     private const KeyCode S = KeyCode.S;
@@ -101,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetTrigger(PlayerAnimations.JumpTrigger);
         }
 
-        if (myRigidbody.velocity.y < -0.1f &&
+        if (myRigidbody.velocity.y < -0.2f &&
             Physics.Raycast(myCollider.bounds.center, -Vector3.up, distanceToGround + 1f))
         {
             StartCoroutine(Falling());
@@ -112,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (falling)
             yield break;
-
+        
         falling = true;
         animator.SetTrigger(PlayerAnimations.JumpLandingTrigger);
         yield return new WaitForSeconds(1f);

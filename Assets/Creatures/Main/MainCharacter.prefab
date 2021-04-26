@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 8546857617623712819}
   - component: {fileID: 8546857617623712818}
   - component: {fileID: 8546857617623712817}
+  - component: {fileID: 8977601154495594377}
   m_Layer: 9
   m_Name: MainCharacter
   m_TagString: Untagged
@@ -235,6 +236,19 @@ MonoBehaviour:
   playerMovement: {fileID: 8546857617623712813}
   playerCameraRotation: {fileID: 8546857617623712819}
   playerMakeSphereCreature: {fileID: 8546857617623712818}
+--- !u!114 &8977601154495594377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8546857617623712815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6453252b2630e04e8f1dcc4b3bf1060, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 20
 --- !u!1001 &8335775895520201791
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -6,6 +6,6 @@ public class PlayerAnimatorFunctions : MonoBehaviour
 {
     public void DoUseSmash()
     {
-
+        ControlledCreatureManager.Instance.DoUseSmash();
     }
 }

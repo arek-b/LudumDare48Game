@@ -17,6 +17,7 @@ public class PlayerCallCreatures : MonoBehaviour
 
     private void CallCreatures()
     {
+        GetComponent<PlayerMovement>().animator.SetTrigger(PlayerAnimations.ShoutTrigger);
         Collider[] result = Physics.OverlapSphere(transform.position, radius);
 
         foreach (Collider item in result)

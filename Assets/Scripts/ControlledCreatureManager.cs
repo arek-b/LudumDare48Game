@@ -12,6 +12,8 @@ public class ControlledCreatureManager : MonoBehaviour
 
     private bool isSphereCreature = false;
 
+    private bool waitForAnimationPoint = false;
+
     private static ControlledCreatureManager instance;
     public static ControlledCreatureManager Instance
     {
@@ -38,6 +40,9 @@ public class ControlledCreatureManager : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (waitForAnimationPoint)
+            return;
+
         if (!isSphereCreature && Input.GetKeyDown(KeyCode.V) && player.playerMakeSphereCreature.MakeSphereCreature())
         {
             SwitchToSphereCreature();
@@ -50,6 +55,15 @@ public class ControlledCreatureManager : MonoBehaviour
 
     private void SwitchToSphereCreature()
     {
+        player.playerMovement.animator.SetTrigger(PlayerAnimations.UseSmashTrigger);
+        waitForAnimationPoint = true;
+    }
+
+    public void DoUseSmash()
+    {
+        if (!waitForAnimationPoint)
+            return;
+
         playerVcam.Priority = int.MinValue;
         sphereCreatureVcam.Priority = int.MaxValue;
         player.playerMovement.enabled = false;
@@ -57,6 +71,7 @@ public class ControlledCreatureManager : MonoBehaviour
         player.playerMakeSphereCreature.enabled = false;
         player.gameObject.SetActive(false);
         isSphereCreature = true;
+        waitForAnimationPoint = false;
     }
 
     private void SwitchToPlayer()
