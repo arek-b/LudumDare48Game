@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2035111234}
-  m_IndirectSpecularColor: {r: 130.96567, g: 162.18726, b: 214.55103, a: 1}
+  m_IndirectSpecularColor: {r: 130.95044, g: 162.22789, b: 214.71747, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -739,7 +739,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 168218571}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.019999983, y: 1.196, z: 1.8108058}
+  m_LocalPosition: {x: 0.019999983, y: 1.196, z: 1.8108063}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 405591765}
@@ -3912,11 +3912,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyCreatureAI: {fileID: 1127113059}
---- !u!136 &735638533 stripped
-CapsuleCollider:
-  m_CorrespondingSourceObject: {fileID: 7148149643400360784, guid: 55e568eb5f885d84093038a26ea3832d, type: 3}
-  m_PrefabInstance: {fileID: 2125187569}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &763138857
 GameObject:
   m_ObjectHideFlags: 0
@@ -4741,7 +4736,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1037846703}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.019999983, y: 1.196, z: -0.687201}
+  m_LocalPosition: {x: 0.019999983, y: 1.196, z: -0.68720114}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 405591765}
@@ -8947,7 +8942,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2059789766}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.5108056, y: 1.196, z: 1.1764029}
+  m_LocalPosition: {x: 2.510806, y: 1.196, z: 1.1764032}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 405591765}
@@ -9482,10 +9477,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7837449738499813522, guid: 55e568eb5f885d84093038a26ea3832d, type: 3}
-      propertyPath: myCollider
-      value: 
-      objectReference: {fileID: 735638533}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55e568eb5f885d84093038a26ea3832d, type: 3}
 --- !u!1001 &7325571930987775120
