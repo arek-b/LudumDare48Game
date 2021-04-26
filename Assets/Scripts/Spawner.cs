@@ -65,8 +65,6 @@ public class Spawner : MonoBehaviour
 
         int toSpawn = targetCreatureCount - creatures.Count;
 
-        Debug.Log($"Spawning {toSpawn} creatures");
-
         for (int i = 0; i < toSpawn; i++)
         {
             CreatureAI instance = Instantiate(creaturePrefab, transform.position + new Vector3(Random.value, 0, Random.value), Quaternion.identity);
