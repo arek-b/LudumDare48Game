@@ -7,7 +7,7 @@ public class TriggerShowUp : MonoBehaviour
     [SerializeField] private GameObject _UIPopUp;
     void OnTriggerEnter(Collider other)
     {
-        if(other.GetComponent<Player>() == true)
+        if(other.GetComponent<Player>())
         {
             _UIPopUp.SetActive(true);
         }
